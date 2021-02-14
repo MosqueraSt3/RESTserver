@@ -3,6 +3,7 @@
 const express = require('express')
 const cors = require('cors')
 const { config } = require('../config/config')
+const { dbConnection } = require('../db/config')
 
 class Server{
 
@@ -10,11 +11,19 @@ class Server{
         this.app = express()
         this.port = config.port
 
+        // Connect to DB
+        this.connectDB()
+
         //Middlewares
         this.middlewares()
         
         // Routes
         this.routes()
+    }
+
+    async connectDB(){
+        // SHOULD VALIDATE NODE_ENV
+        await dbConnection()
     }
 
     middlewares(){
@@ -25,7 +34,7 @@ class Server{
         this.app.use( express.json() )
 
         // Public Directory
-        // this.app.use( express.static('public') )
+        this.app.use( express.static('public') )
     }
 
     routes(){
