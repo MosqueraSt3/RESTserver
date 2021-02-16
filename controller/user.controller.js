@@ -55,7 +55,7 @@ const getUser = async (req, res) => {
     res.send(user)
 }
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
     const { id } = req.params
 
     // DELETE FROM DB
