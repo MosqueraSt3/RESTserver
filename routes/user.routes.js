@@ -3,13 +3,19 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
 
-const { listUser,upsertUser,getUser,deleteUser } = require('../controller/user.controller')
-const { isRoleValidate,isEmailExist } = require('../helpers/db-validators')
+const { listUser,updateUser,upsertUser,getUser,deleteUser } = require('../controller/user.controller')
+const { isRoleValidate,isEmailExist, isUserExist } = require('../helpers/db-validators')
 const { validateJson } = require('../middlewares/validate-json')
 
 const router = Router()
 
 router.get('/', listUser)
+router.put('/:id',[
+    check('id', 'Invalid Id').isMongoId(),
+    check('id').custom( isUserExist ),
+    check('role').custom( isRoleValidate ),
+    validateJson
+], updateUser)
 router.post('/', [
     check('name', 'Invalid Name').not().isEmpty(),
     check('email', 'Invalid Email').isEmail(),
@@ -19,7 +25,15 @@ router.post('/', [
     check('role').custom( isRoleValidate ),
     validateJson
 ],upsertUser)
-router.get('/:id', getUser)
-router.delete('/:id', deleteUser)
+router.get('/:id',[
+    check('id', 'Invalid Id').isMongoId(),
+    check('id').custom( isUserExist ),
+    validateJson
+],getUser)
+router.delete('/:id',[
+    check('id', 'Invalid Id').isMongoId(),
+    check('id').custom( isUserExist ),
+    validateJson
+],deleteUser)
 
 module.exports = router
