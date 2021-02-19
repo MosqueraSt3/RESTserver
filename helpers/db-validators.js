@@ -18,7 +18,7 @@ const isEmailExist = async (email = '') => {
 }
 
 const isUserExist = async (id = '') => {
-    const alreadyExistUser = await User.findOne({ id })
+    const alreadyExistUser = await User.findById( id )
         if ( !alreadyExistUser ) {
             throw new Error(`User ${ id } doesn't exist on database`)
         }
