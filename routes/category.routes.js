@@ -6,7 +6,7 @@ const { check } = require('express-validator')
 const {validateJson,validateJWT,hasRole,isAdmin} = require('../middlewares')
 const { isRoleValidate,isEmailExist, isUserExist, isCategoryExist } = require('../helpers/db-validators')
 
-const { listCategory,updateCategory,upsertCategory,getCategory,deleteCategory } = require('../controller/user.controller')
+const { listCategory,updateCategory,upsertCategory,getCategory,deleteCategory } = require('../controller/category.controller')
 
 
 const router = Router()

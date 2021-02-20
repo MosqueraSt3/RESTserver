@@ -25,7 +25,7 @@ const updateCategory = async (req, res) => {
     bodyCategory.userID = req.user._id
 
     const category = await Category.findByIdAndUpdate(id, bodyCategory, {new: true})
-    res.send(user)
+    res.send(category)
 }
 
 const upsertCategory = async (req, res) => {    
@@ -34,7 +34,7 @@ const upsertCategory = async (req, res) => {
 
     const categoryAlreadyExist = await Category.findOne( {name} )
 
-    if (!categoryAlreadyExist) {
+    if (categoryAlreadyExist) {
         return res.status(400).json({
             msg: 'Category already exists on DB'
         })
@@ -57,6 +57,7 @@ const upsertCategory = async (req, res) => {
 const getCategory = async (req, res) => {
     const { id } = req.params
     const category = await Category.findById( id )
+        .populate('userID', 'name')
     res.send(category)
 }
 
@@ -65,6 +66,7 @@ const deleteCategory = async (req, res) => {
 
     // THE BEST WAY TO DELETE USERS
     const category = await Category.findByIdAndUpdate( id, {status: false}, {new: true})
+        .populate('userID', 'name')
     const userAuth = req.user
     res.json({
         category,
