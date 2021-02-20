@@ -3,9 +3,10 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
 
+const {validateJson,validateJWT,hasRole,isAdmin} = require('../middlewares')
+
 const { listUser,updateUser,upsertUser,getUser,deleteUser } = require('../controller/user.controller')
 const { isRoleValidate,isEmailExist, isUserExist } = require('../helpers/db-validators')
-const { validateJson } = require('../middlewares/validate-json')
 
 const router = Router()
 
@@ -31,6 +32,9 @@ router.get('/:id',[
     validateJson
 ],getUser)
 router.delete('/:id',[
+    validateJWT,
+    // isAdmin, HAVE TO BE ADMIN TO TO SOMETHING
+    hasRole('ADMIN_ROLE','SUPER_ROLE'),
     check('id', 'Invalid Id').isMongoId(),
     check('id').custom( isUserExist ),
     validateJson

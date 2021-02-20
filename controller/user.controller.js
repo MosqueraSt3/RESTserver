@@ -58,13 +58,13 @@ const getUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const { id } = req.params
 
-    // DELETE FROM DB
-    // const user = await User.findByIdAndDelete( id )
-
     // THE BEST WAY TO DELETE USERS
     const user = await User.findByIdAndUpdate( id, {status: false}, {new: true})
-
-    res.send(user)
+    const userAuth = req.user
+    res.json({
+        user,
+        userAuth
+    })
 }
 
 module.exports = {
