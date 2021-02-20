@@ -1,7 +1,6 @@
 'use strict'
 
-const Role = require('../models/role')
-const User = require('../models/user')
+const { Category, Role, User } = require('../models')
 
 const isRoleValidate = async (role = '') => {
     const existRole = await  Role.findOne({ role })
@@ -24,8 +23,16 @@ const isUserExist = async (id = '') => {
         }
 }
 
+const isCategoryExist = async (id = '') => {
+    const alreadyExists = await Category.findById( id )
+    if (!alreadyExists) {
+        throw new Error(`Category ${id} doesn't exist on databasee`)
+    }
+}
+
 module.exports = {
     isRoleValidate,
     isEmailExist,
-    isUserExist
+    isUserExist,
+    isCategoryExist
 }
