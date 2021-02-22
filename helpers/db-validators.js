@@ -1,5 +1,6 @@
 'use strict'
 
+const { Collection } = require('mongoose')
 const { Category, Role, User, Item } = require('../models')
 
 const isRoleValidate = async (role = '') => {
@@ -37,10 +38,20 @@ const isItemExist = async (id = '') => {
     }
 }
 
+const collectionsAllowed = async(collection = '', collections = []) => {
+    const include = collections.includes( collection )
+    if (!include) {
+        throw new Error('Invalid Collection')
+    }
+
+    return true
+}
+
 module.exports = {
     isRoleValidate,
     isEmailExist,
     isUserExist,
     isCategoryExist,
-    isItemExist
+    isItemExist,
+    collectionsAllowed
 }
