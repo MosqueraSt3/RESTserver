@@ -3,7 +3,7 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
 
-const { fileUpload, updateFile, getImage } = require('../controller/uploads.controller')
+const { fileUpload, updateFile, getImage, updateFileCloudinary } = require('../controller/uploads.controller')
 const { collectionsAllowed } = require('../helpers/db-validators')
 const { validateFile,validateJson } = require('../middlewares')
 
@@ -16,7 +16,7 @@ router.put('/:collection/:id', [
     check('id', 'Invalid Id').isMongoId(),
     check('collection').custom( c => collectionsAllowed(c, ['user', 'item'])),
     validateJson
-],updateFile)
+],updateFileCloudinary)
 
 router.get('/:collection/:id', [
     validateFile,
